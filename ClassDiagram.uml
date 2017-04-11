@@ -2,11 +2,166 @@
 <Diagram>
   <ID>JAVA</ID>
   <OriginalElement />
-  <nodes />
+  <nodes>
+    <node x="789.0" y="371.5">game.projectiles.DirectProjectile</node>
+    <node x="851.0" y="303.5">game.projectiles.Projectile</node>
+    <node x="737.0" y="20.5">game.GameState</node>
+    <node x="1121.0" y="464.5">game.towers.ArrowTower</node>
+    <node x="-279.0" y="306.0">states.GameState</node>
+    <node x="1131.0" y="241.5">game.towers.Tower</node>
+    <node x="1002.0" y="13.5">game.level.Level</node>
+    <node x="594.0" y="308.5">game.enemies.Enemy</node>
+    <node x="756.0" y="123.5">game.Game</node>
+    <node x="-35.0" y="61.0">states.State</node>
+    <node x="956.0" y="371.5">game.projectiles.AreaProjectile</node>
+    <node x="159.0" y="-9.0">ui.TowerDefence</node>
+    <node x="789.0" y="465.5">game.projectiles.ArrowProjectile</node>
+    <node x="155.0" y="308.0">states.MainMenuState</node>
+    <node x="579.0" y="406.5">game.enemies.Wanderer</node>
+    <node x="-73.0" y="230.0">states.LevelSelectState</node>
+    <node x="1002.0" y="122.5">game.level.Level1</node>
+    <node x="735.0" y="237.5">game.GameObject</node>
+    <node x="1133.0" y="12.5">game.level.Wave</node>
+  </nodes>
   <notes />
-  <edges />
-  <settings layout="Hierarchic Group" zoom="1.0" x="0.5" y="-39.5" />
-  <SelectedNodes />
+  <edges>
+    <edge source="game.level.Level1" target="game.level.Wave">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.projectiles.Projectile" target="game.Game">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="states.MainMenuState" target="states.State">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.TowerDefence" target="game.Game">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="states.GameState" target="states.MainMenuState">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.Game" target="game.level.Level">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.enemies.Wanderer" target="game.enemies.Enemy">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.level.Level" target="game.level.Wave">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.Game" target="game.level.Level1">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.towers.Tower" target="game.GameObject">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="states.LevelSelectState" target="states.GameState">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.towers.ArrowTower" target="game.projectiles.ArrowProjectile">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="states.LevelSelectState" target="states.State">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="states.GameState" target="states.State">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.Game" target="game.towers.Tower">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.Game" target="game.enemies.Enemy">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="states.MainMenuState" target="states.LevelSelectState">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="states.LevelSelectState" target="game.Game">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.towers.ArrowTower" target="game.towers.Tower">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.projectiles.ArrowProjectile" target="game.projectiles.DirectProjectile">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.projectiles.Projectile" target="game.GameObject">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.level.Level1" target="game.level.Level">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="states.State" target="ui.TowerDefence">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.TowerDefence" target="states.State">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.projectiles.DirectProjectile" target="game.projectiles.Projectile">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.Game" target="game.projectiles.Projectile">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.TowerDefence" target="states.MainMenuState">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.Game" target="game.GameState">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="states.LevelSelectState" target="states.MainMenuState">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.projectiles.DirectProjectile" target="game.enemies.Enemy">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.towers.Tower" target="game.Game">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.projectiles.AreaProjectile" target="game.projectiles.Projectile">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="game.enemies.Enemy" target="game.GameObject">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="531.0" y="302.0" />
+  <SelectedNodes>
+    <node>game.towers.ArrowTower</node>
+  </SelectedNodes>
   <Categories />
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

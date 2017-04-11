@@ -33,9 +33,10 @@ public class Game {
 	private MouseState startDragState;
 
 	int gold = level.startingGold;
+	public int lives = level.lives;
 
 
-	GameState gameState = GameState.WaveStart;
+	public GameState gameState = GameState.WaveStart;
 	double stateTime = 0;
 
 	ArrayList<Enemy> enemies = new ArrayList<>();
@@ -115,6 +116,16 @@ public class Game {
 				}
 				for(Enemy e : enemies) {
 					e.update(elapsedTime);
+					if(e.pathNode == map.path.size()-1)
+					{
+						e.damage(9999999);
+						lives--;
+						if(lives <= 0)
+						{
+							stateTime = 0;
+							gameState = GameState.Loser;
+						}
+					}
 					if(!e.isAlive())
 						gold += e.gold;
 				}
@@ -142,8 +153,6 @@ public class Game {
 						waveEnemySpawnTimer = 0;
 					}
 				}
-
-
 				break;
 		}
 	}
@@ -286,10 +295,16 @@ public class Game {
 	private void drawOverlay(Graphics2D g2d) {
 		g2d.setColor(new Color(1.0f,1.0f,1.0f,0.5f));
 		g2d.fill(new RoundRectangle2D.Double(0,0,400,100, 50, 50));
-
 		g2d.setFont(new Font("Segoe UI", 0, 72));
 		g2d.setColor(Color.black);
 		g2d.drawString("Gold: " + gold, 10,72);
+
+		g2d.setColor(new Color(1.0f,1.0f,1.0f,0.5f));
+		g2d.fill(new RoundRectangle2D.Double(400,0,400,100, 50, 50));
+		g2d.setFont(new Font("Segoe UI", 0, 72));
+		g2d.setColor(Color.black);
+		g2d.drawString("Lives: " + lives, 410,72);
+
 
 
 		switch(gameState)
@@ -312,6 +327,17 @@ public class Game {
 			case Winner: {
 				double fac = Math.min(2, stateTime); //runs from 0 to 2
 				Shape s = new Font("Segoe UI", 0, 72).createGlyphVector(g2d.getFontRenderContext(), "You Win!").getOutline();
+				AffineTransform tx = new AffineTransform();
+				tx.translate(900, 400);
+				tx.scale(fac, fac);
+				tx.translate(-s.getBounds().getWidth() / 2, -s.getBounds().getHeight() / 2);
+				s = tx.createTransformedShape(s);
+				g2d.fill(s);
+				break;
+			}
+			case Loser:{
+				double fac = Math.min(2, stateTime); //runs from 0 to 2
+				Shape s = new Font("Segoe UI", 0, 72).createGlyphVector(g2d.getFontRenderContext(), "You Lose!").getOutline();
 				AffineTransform tx = new AffineTransform();
 				tx.translate(900, 400);
 				tx.scale(fac, fac);

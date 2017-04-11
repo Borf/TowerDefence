@@ -19,7 +19,7 @@ public class Enemy extends GameObject {
 
 
 	public TiledMap map;
-	int pathNode = 0;
+	public int pathNode = 0;
 
 	public Enemy(String image)
 	{

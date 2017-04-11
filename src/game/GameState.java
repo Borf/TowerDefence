@@ -7,5 +7,5 @@ public enum GameState {
 	WaveStart,
 	Wave,
 	WaveEnd,
-	WaveBreak, Winner,
+	WaveBreak, Winner, Loser
 }

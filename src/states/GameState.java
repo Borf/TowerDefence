@@ -24,6 +24,11 @@ public class GameState extends State {
 		lastTime = time;
 
 		towerDefence.game.update(mouseState, lastMouseState, elapsedTime);
+
+		if((towerDefence.game.gameState == game.GameState.Winner || towerDefence.game.gameState == game.GameState.Loser) &&
+			mouseState.left && !lastMouseState.left)
+			return new MainMenuState();
+
 		return null;
 	}
 
