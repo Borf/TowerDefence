@@ -396,6 +396,6 @@ public class Game {
 
 	}
 	public void addProjectile(Projectile projectile) {
-		projectiles.add(projectile);
+		projectiles.add(projectile);projectile.setGame(this);
 	}
 }

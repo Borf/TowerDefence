@@ -6,13 +6,16 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by johan on 11-4-2017.
+ * A projectile that damages an area of monsters
  */
 public class AreaProjectile extends Projectile {
 	double range;
-	public AreaProjectile(String image, int x, int y, int range) {
+	public AreaProjectile(String image, double x, double y, int range) {
 		super(image);
 		this.range = range;
+		targetX = (int)x;
+		targetY = (int)y;
+
 	}
 
 	@Override

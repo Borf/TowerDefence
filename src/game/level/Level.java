@@ -2,6 +2,9 @@ package game.level;
 
 import java.util.ArrayList;
 
+/**
+ * Abstract level container
+ */
 public abstract class Level{
 
 	public String map;

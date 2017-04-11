@@ -58,4 +58,7 @@ public abstract  class Projectile extends GameObject {
 		return !atTarget || freezeTime > 0;
 	}
 
+	public void setGame(Game game) {
+		this.game = game;
+	}
 }

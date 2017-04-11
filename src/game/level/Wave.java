@@ -3,7 +3,7 @@ package game.level;
 import java.util.ArrayList;
 
 /**
- * Created by johan on 2017-04-10.
+ * class representing a wave of monsters
  */
 public class Wave {
 	public double delay = 1;

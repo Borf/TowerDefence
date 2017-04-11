@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 /**
- * Created by johan on 2017-04-10.
+ * A class representing an enemy on the screen
  */
 public class Enemy extends GameObject {
 	protected int maxHealth = 100;
@@ -18,14 +18,21 @@ public class Enemy extends GameObject {
 	public int gold = 1;
 
 
+	//for pathfinding
 	public TiledMap map;
 	public int pathNode = 0;
 
+	//constructor for a 4x4 spritesheet
 	public Enemy(String image)
 	{
 		super(image, 4, 4);
 	}
 
+
+	/**
+	 * Updates the enemy, making it follow the path at a certain speed
+	 * @param elapsedTime Time elapsed since last update
+	 */
 	public void update(double elapsedTime)
 	{
 		Point target = map.path.get(pathNode);
@@ -69,12 +76,20 @@ public class Enemy extends GameObject {
 
 	}
 
+	/**
+	 * Indicates if this enemy is alive
+	 * @return is this enemy alive
+	 */
 	public boolean isAlive()
 	{
 		return health > 0;
 	}
 
 
+	/**
+	 * Draws the enemy with a healthbar
+	 * @param g2d
+	 */
 	public void draw(Graphics2D g2d)
 	{
 		super.draw(g2d);
@@ -88,6 +103,10 @@ public class Enemy extends GameObject {
 	}
 
 
+	/**
+	 * Damages the enemy
+	 * @param dmg amount of damage
+	 */
 	public void damage(int dmg) {
 		health -= dmg;
 		if(health < 0)
