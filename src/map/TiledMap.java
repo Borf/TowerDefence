@@ -30,6 +30,7 @@ public class TiledMap {
 	
 	public TiledMap(String filename)
 	{
+		System.out.println("Loading map " + filename);
 		JsonReader reader = null;
 		try {
 			reader = Json.createReader(getClass().getResourceAsStream(filename));

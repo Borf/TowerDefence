@@ -4,26 +4,21 @@ import game.enemies.Enemy;
 import game.level.Level;
 import game.level.Level1;
 import game.projectiles.Projectile;
-import game.towers.ArrowTower;
 import game.towers.Tower;
 import map.TiledMap;
 import ui.MouseState;
+import util.Reflection;
 
 import java.awt.*;
 import java.awt.geom.*;
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 /**
  * Created by johan on 2017-04-10.
  */
 public class Game {
 	TiledMap map;
-
 	Level level = new Level1();
 
 	private int cameraX = 0;
@@ -50,11 +45,18 @@ public class Game {
 
 
 
-	public Game()
+	public Game(Level level)
 	{
-		map = new TiledMap("/maps/map1.json");
+		level = level;
+		map = new TiledMap("/maps/" + level.map);
+		initializeTowerTemplates();
+	}
 
-		Class<?>[] towerTemplates = getClasses("game.towers");
+	/**
+	 * Initializes tower templates through reflection
+	 */
+	private void initializeTowerTemplates() {
+		Class<?>[] towerTemplates = Reflection.getClasses("game.towers");
 		buildTowers = new Tower[towerTemplates.length-1];
 		int ii = 0;
 		for(int i = 0; i < towerTemplates.length; i++)
@@ -72,89 +74,26 @@ public class Game {
 				e.printStackTrace();
 			}
 		}
-
-
-
-
 	}
 
+	/**
+	 * Heart of the game engine. Should be called every tick
+	 * @param mouseState 		 The current mouse state
+	 * @param lastMouseState The mouse state of last frame
+	 * @param elapsedTime    The number of seconds elapsed since last frame
+	 */
 	public void update(MouseState mouseState, MouseState lastMouseState, double elapsedTime)
 	{
 		stateTime += elapsedTime;
+		//update camera
 		if(mouseState.middle)
 		{
 			cameraX += lastMouseState.x - mouseState.x;
 			cameraY += lastMouseState.y - mouseState.y;
 		}
 
-		if(mouseState.left && !lastMouseState.left && !towerBuilding)
-		{
-			startDragState = new MouseState(mouseState);
-			try {
-				Point2D mouse = getCameraTransform().inverseTransform(new Point2D.Double(mouseState.x, mouseState.y), null);
-				int tileX = (int) (mouse.getX() / 128);
-				int tileY = (int) (mouse.getY() / 128);
-				if (tileX >= 0 && tileY >= 0 && tileX < map.width && tileY < map.height) {
-					int index = map.layers.get(0).indices[tileY][tileX];
-					if (index == 23) {
-						towerBuildX = tileX * 128 + 64;
-						towerBuildY = tileY * 128 + 64;
-						towerBuilding = true;
-						towerBuildHack = true;
-					}
-				}
-			} catch (NoninvertibleTransformException e) {
-				e.printStackTrace();
-			}
-		}
-		else if(towerBuilding && (mouseState.left || lastMouseState.left))
-		{
-			if(mouseState.left && !lastMouseState.left)
-				startDragState = new MouseState(mouseState);
-			try {
-				Point2D mouse = getCameraTransform().inverseTransform(new Point2D.Double(mouseState.x, mouseState.y), null);
-
-				Shape buildWindow = new RoundRectangle2D.Double(towerBuildX, towerBuildY, 400, 150, 10, 10);
-				if(buildWindow.contains(mouse) && !towerBuildHack)
-				{
-					if(mouseState.left && lastMouseState.left) // drag
-						towerBuildScroll += (mouseState.x - lastMouseState.x);
-					else if(!mouseState.left && lastMouseState.left && new Point(mouseState.x, mouseState.y).distance(startDragState.x, startDragState.y) < 3) //mouse up
-					{
-						int index = (int)((mouse.getX() - (towerBuildX + 5 + towerBuildScroll)) / 130);
-						if(index >= 0 && index < buildTowers.length && buildTowers[index].cost <= gold) {
-							gold -= buildTowers[index].cost;
-
-							Tower newTower = (Tower) buildTowers[index].getClass().newInstance();
-							newTower.x = towerBuildX;
-							newTower.y = towerBuildY;
-							newTower.centerY = -(newTower.images[0].getHeight() - 128);
-							newTower.setGame(this);
-							towers.add(newTower);
-							map.layers.get(0).indices[(towerBuildY - 64) / 128][(towerBuildX - 64) / 128] = 1;
-							map.layers.get(0).updateImage();
-						}
-
-						towerBuilding = false;
-					}
-
-				}
-				else if(!lastMouseState.left && !towerBuildHack)
-					towerBuilding = false;
-			} catch (NoninvertibleTransformException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			}
-			if(!mouseState.left && lastMouseState.left)
-				towerBuildHack = false;
-
-		}
-
-
-
+		//tower building menu
+		updateTowerBuildMenu(mouseState, lastMouseState);
 
 		switch(gameState)
 		{
@@ -209,8 +148,92 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Handles the mouse for the tower building menu
+	 * @param mouseState     Current mouse state
+	 * @param lastMouseState Last mouse state
+	 */
+	private void updateTowerBuildMenu(MouseState mouseState, MouseState lastMouseState) {
+		Point2D mouse = null;
+		try {
+			mouse = getCameraTransform().inverseTransform(new Point2D.Double(mouseState.x, mouseState.y), null);
+		} catch (NoninvertibleTransformException e) {
+			e.printStackTrace();
+		}
+
+		if(mouseState.left && !lastMouseState.left && !towerBuilding)
+		{
+			startDragState = new MouseState(mouseState);
+			int tileX = (int) (mouse.getX() / 128);
+			int tileY = (int) (mouse.getY() / 128);
+			if (tileX >= 0 && tileY >= 0 && tileX < map.width && tileY < map.height) {
+				int index = map.layers.get(0).indices[tileY][tileX];
+				if (index == 23) {
+					towerBuildX = tileX * 128 + 64;
+					towerBuildY = tileY * 128 + 64;
+					towerBuilding = true;
+					towerBuildHack = true;
+				}
+			}
+		}
+		else if(towerBuilding && (mouseState.left || lastMouseState.left))
+		{
+			if(mouseState.left && !lastMouseState.left)
+				startDragState = new MouseState(mouseState);
+
+			Shape buildWindow = new RoundRectangle2D.Double(towerBuildX, towerBuildY, 400, 150, 10, 10);
+			if(buildWindow.contains(mouse) && !towerBuildHack)
+			{
+				if(mouseState.left && lastMouseState.left) // drag
+					towerBuildScroll += (mouseState.x - lastMouseState.x);
+				else if(!mouseState.left && lastMouseState.left && new Point(mouseState.x, mouseState.y).distance(startDragState.x, startDragState.y) < 3) //mouse up
+				{
+					int index = (int)((mouse.getX() - (towerBuildX + 5 + towerBuildScroll)) / 130);
+					if(index >= 0 && index < buildTowers.length && buildTowers[index].cost <= gold) {
+						buildTower(index);
+					}
+
+					towerBuilding = false;
+				}
+
+			}
+			else if(!lastMouseState.left && !towerBuildHack)
+				towerBuilding = false;
+
+			if(!mouseState.left && lastMouseState.left)
+				towerBuildHack = false;
+
+		}
+	}
+
+	/**
+	 * Builds a tower at the towerbuild position
+	 * @param index the index in the tower build array of the tower to build
+	 */
+	private void buildTower(int index)
+	{
+		try {
+			gold -= buildTowers[index].cost;
+			Tower newTower = newTower = (Tower) buildTowers[index].getClass().newInstance();
+			newTower.x = towerBuildX;
+			newTower.y = towerBuildY;
+			newTower.centerY = -(newTower.images[0].getHeight() - 128);
+			newTower.setGame(this);
+			towers.add(newTower);
+			map.layers.get(0).indices[(towerBuildY - 64) / 128][(towerBuildX - 64) / 128] = 1;
+			map.layers.get(0).updateImage();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
 
 
+	/**
+	 * Draws the game
+	 * @param g2d The graphics object to draw on
+	 */
 	public void draw(Graphics2D g2d)
 	{
 		AffineTransform oldTransform = g2d.getTransform();
@@ -249,20 +272,16 @@ public class Game {
 				g2d.draw(s);
 				x+=130;
 			}
-
-
-
-
-
 		}
-
-
-
 		g2d.setTransform(oldTransform);
 		drawOverlay(g2d);
 
 	}
 
+	/**
+	 * Draws the overlay that doesn't scroll with the camera (just texts for now)
+	 * @param g2d	the graphics object to draw on
+	 */
 	private void drawOverlay(Graphics2D g2d) {
 		g2d.setColor(new Color(1.0f,1.0f,1.0f,0.5f));
 		g2d.fill(new RoundRectangle2D.Double(0,0,400,100, 50, 50));
@@ -309,7 +328,13 @@ public class Game {
 		return AffineTransform.getTranslateInstance(-cameraX, -cameraY);
 	}
 
-	public ArrayList<Enemy> getEnemyNear(Point p, double range)
+	/**
+	 * Gets a list of enemies near a point
+	 * @param p     The position to search from
+	 * @param range The range to search in
+	 * @return
+	 */
+	public ArrayList<Enemy> getEnemiesNear(Point p, double range)
 	{
 		ArrayList<Enemy> inRange = new ArrayList<>();
 		for(Enemy e : enemies)
@@ -319,13 +344,13 @@ public class Game {
 	}
 
 
-
+	/**
+	 * Spawns an enemy. Don't call this if at the end of the wave
+	 */
 	private void spawnEnemy() {
-		System.out.println("Spawning enemy....");
 		waveEnemySpawnTimer = level.waves.get(currentWave-1).delay;
 
 		try {
-			//ugly reflection to go from the object's class to the object so I don't have to write a Enemy loader
 			Class<?> enemyClass = level.waves.get(currentWave-1).enemies.get(waveEnemiesSpawned);
 			Enemy enemy = (Enemy) enemyClass.newInstance();
 			enemy.x = map.path.get(0).x * 128 + 64;
@@ -343,54 +368,7 @@ public class Game {
 		}
 
 	}
-
-
 	public void addProjectile(Projectile projectile) {
 		projectiles.add(projectile);
 	}
-
-	private static Class[] getClasses(String packageName)
-	{
-		try {
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-			assert classLoader != null;
-			String path = packageName.replace('.', '/');
-			Enumeration<URL> resources = null;
-				resources = classLoader.getResources(path);
-			ArrayList<File> dirs = new ArrayList();
-			while (resources.hasMoreElements()) {
-				URL resource = resources.nextElement();
-				dirs.add(new File(resource.getFile()));
-			}
-			ArrayList<Class> classes = new ArrayList();
-			for (File directory : dirs) {
-				classes.addAll(findClasses(directory, packageName));
-			}
-			return classes.toArray(new Class[classes.size()]);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	private static java.util.List<Class> findClasses(File directory, String packageName)
-		throws ClassNotFoundException {
-		java.util.List<Class> classes = new ArrayList();
-		if (!directory.exists()) {
-			return classes;
-		}
-		File[] files = directory.listFiles();
-		for (File file : files) {
-			if (file.isDirectory()) {
-				assert !file.getName().contains(".");
-				classes.addAll(findClasses(file, packageName + "." + file.getName()));
-			} else if (file.getName().endsWith(".class")) {
-				classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
-			}
-		}
-		return classes;
-	}
-
-
 }

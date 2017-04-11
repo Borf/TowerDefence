@@ -43,4 +43,8 @@ public class Button {
 						mouseState.x > x && mouseState.x < x+width &&
 						mouseState.y > y && mouseState.y < y+height;
 	}
+
+	public String getText() {
+		return text;
+	}
 }

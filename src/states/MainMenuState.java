@@ -22,8 +22,7 @@ public class MainMenuState extends State {
 	@Override
 	public State update() {
 		if(startButton.clicked(mouseState, lastMouseState)) {
-			towerDefence.game = new Game();
-			return new GameState();
+			return new LevelSelectState();
 		}
 		else if(quitButton.clicked(mouseState, lastMouseState))
 			System.exit(0);

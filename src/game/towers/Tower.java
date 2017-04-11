@@ -30,7 +30,7 @@ public abstract class Tower extends GameObject {
 		fireTimer -= elapsedTime;
 		if(fireTimer < 0)
 		{
-			ArrayList<Enemy> inRange = game.getEnemyNear(new Point((int)x,(int)y), range);
+			ArrayList<Enemy> inRange = game.getEnemiesNear(new Point((int)x,(int)y), range);
 			if(!inRange.isEmpty())
 				shoot(inRange.get(0)); //TODO: pick random ones?
 

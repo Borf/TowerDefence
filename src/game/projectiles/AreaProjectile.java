@@ -17,7 +17,7 @@ public class AreaProjectile extends Projectile {
 
 	@Override
 	public void onHit() {
-		ArrayList<Enemy> enemiesNear = game.getEnemyNear(new Point(targetX, targetY), range);
+		ArrayList<Enemy> enemiesNear = game.getEnemiesNear(new Point(targetX, targetY), range);
 		for(Enemy e : enemiesNear)
 			onHit(e);
 	}
