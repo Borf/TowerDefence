@@ -240,14 +240,15 @@ public class Game {
 		g2d.setTransform(getCameraTransform());
 		map.draw(g2d);
 
-		for(Enemy e : enemies)
-			e.draw(g2d);
 
-		for(Tower t : towers)
-			t.draw(g2d);
+		ArrayList<GameObject> objects = new ArrayList<>();
+		objects.addAll(enemies);
+		objects.addAll(towers);
+		objects.addAll(projectiles);
+		objects.sort((GameObject a, GameObject b) -> (int)(a.y - b.y));
 
-		for(Projectile p : projectiles)
-			p.draw(g2d);
+		for(GameObject o : objects)
+			o.draw(g2d);
 
 		if(towerBuilding)
 		{
