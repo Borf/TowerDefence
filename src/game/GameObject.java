@@ -14,10 +14,12 @@ public class GameObject
 {
 	public double x;
 	public double y;
+	public double angle = 0;
 	protected BufferedImage[] images;
 	private int sheetWidth;
 	private int sheetHeight;
 	protected int frame;
+	public double centerX = 0, centerY = 0;
 
 
 
@@ -58,8 +60,9 @@ public class GameObject
 	{
 		AffineTransform tx = new AffineTransform();
 		tx.translate(x,y);
+		tx.rotate(angle);
 		tx.translate(-images[frame].getWidth()/2, -images[frame].getHeight()/2);
-
+		tx.translate(centerX, centerY);
 		g2d.drawImage(images[frame], tx, null);
 	}
 	public void update(double elapsedTime)

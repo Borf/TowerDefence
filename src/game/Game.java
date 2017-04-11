@@ -3,6 +3,7 @@ package game;
 import game.enemies.Enemy;
 import game.level.Level;
 import game.level.Level1;
+import game.projectiles.Projectile;
 import game.towers.ArrowTower;
 import game.towers.Tower;
 import map.TiledMap;
@@ -73,6 +74,7 @@ public class Game {
 					e.update(elapsedTime);
 
 				enemies.removeIf(e -> !e.isAlive());
+				projectiles.removeIf(p -> !p.isAlive());
 
 				for(Tower t : towers)
 					t.update(elapsedTime);
@@ -172,4 +174,7 @@ public class Game {
 	}
 
 
+	public void addProjectile(Projectile projectile) {
+		projectiles.add(projectile);
+	}
 }

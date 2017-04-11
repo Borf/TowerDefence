@@ -2,8 +2,8 @@ package game.towers;
 
 import game.Game;
 import game.GameObject;
+import game.projectiles.Projectile;
 import game.enemies.Enemy;
-import ui.TowerDefence;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -39,6 +39,15 @@ public abstract class Tower extends GameObject {
 		}
 	}
 	public abstract void shoot(Enemy e);
+
+	protected void shoot(Projectile projectile)
+	{
+		projectile.x = x;
+		projectile.y = y;
+		game.addProjectile(projectile);
+	}
+
+
 
 	public void setGame(Game game) { this.game = game; }
 }
