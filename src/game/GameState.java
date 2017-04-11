@@ -6,5 +6,6 @@ package game;
 public enum GameState {
 	WaveStart,
 	Wave,
-	WaveEnd
+	WaveEnd,
+	WaveBreak, Winner,
 }

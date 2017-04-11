@@ -14,16 +14,15 @@ import java.util.ArrayList;
 public abstract class Tower extends GameObject {
 	private Game game;
 
+	public int cost = 75;
 	protected double fireDelay = 0.25;
 	protected double range = 200;
 	private double fireTimer = 0;
 
 
 
-	public Tower(String image, int x, int y) {
+	public Tower(String image) {
 		super(image, 1,1);
-		this.x = 128*x + 64;
-		this.y = 128*y + 64 - (this.images[this.frame].getHeight()-128)/2;
 	}
 
 	@Override

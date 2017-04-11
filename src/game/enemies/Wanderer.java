@@ -9,5 +9,6 @@ public class Wanderer extends Enemy {
 		super("/enemies/wanderer.png");
 		this.speed = 100;
 		this.maxHealth = 100;
+		this.gold = 25;
 	}
 }

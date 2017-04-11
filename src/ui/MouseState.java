@@ -15,7 +15,7 @@ public class MouseState {
 	{
 
 	}
-	MouseState(MouseState other)
+	public MouseState(MouseState other)
 	{
 		x = other.x;
 		y = other.y;

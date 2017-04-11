@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 public class TiledTileLayer {
 	TiledMap map;
-	int[][] indices;
+	public int[][] indices;
 	int width;
 	int height;
 	BufferedImage image;
@@ -70,4 +70,7 @@ public class TiledTileLayer {
 		return img;
 	}
 
+	public void updateImage() {
+		image = createImage();
+	}
 }

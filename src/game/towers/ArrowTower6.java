@@ -6,8 +6,8 @@ import game.projectiles.ArrowProjectile;
 /**
  * Created by johan on 2017-04-10.
  */
-public class ArrowTower extends Tower {
-	public ArrowTower() {
+public class ArrowTower6 extends Tower {
+	public ArrowTower6() {
 		super("/towers/arrow.png");
 		//this.cost = 100;
 		this.range = 200;

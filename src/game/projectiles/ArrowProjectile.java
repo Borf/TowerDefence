@@ -13,4 +13,11 @@ public class ArrowProjectile extends DirectProjectile {
 		freezeTime = 0.25;
 	}
 
+
+	public void onHit(Enemy enemy)
+	{
+		enemy.damage(10);
+	}
+
+
 }

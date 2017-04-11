@@ -15,6 +15,7 @@ public class Enemy extends GameObject {
 	protected int maxHealth = 100;
 	protected int health = maxHealth;
 	protected double speed = 100;// + Math.random() * 10;
+	public int gold = 1;
 
 
 	public TiledMap map;

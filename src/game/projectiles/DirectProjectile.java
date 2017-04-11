@@ -20,6 +20,10 @@ public class DirectProjectile extends Projectile {
 		super.update(elapsedTime);
 	}
 
+	@Override
+	public void onHit() {
+		onHit(target);
+	}
 
 
 }

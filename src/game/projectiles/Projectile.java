@@ -1,17 +1,20 @@
 package game.projectiles;
 
+import game.Game;
 import game.GameObject;
+import game.enemies.Enemy;
 
 import java.awt.*;
 
 /**
  * Created by johan on 2017-04-10.
  */
-public class Projectile extends GameObject {
+public abstract  class Projectile extends GameObject {
 	int targetX, targetY;
 	double speed;
 	double freezeTime = 0;
 	boolean atTarget = false;
+	Game game;
 
 	public Projectile(String image) {
 		super(image, 1, 1);
@@ -25,6 +28,8 @@ public class Projectile extends GameObject {
 		double len = Math.sqrt(diffX*diffX+diffY*diffY);
 		if(len < speed || atTarget)
 		{
+			if(!atTarget)
+				onHit();
 			freezeTime-=elapsedTime;
 			x = targetX;
 			y = targetY;
@@ -41,6 +46,12 @@ public class Projectile extends GameObject {
 		}
 	}
 
+	public abstract void onHit();
+
+	public void onHit(Enemy enemy)
+	{
+
+	}
 
 	public boolean isAlive()
 	{

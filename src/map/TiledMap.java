@@ -21,7 +21,7 @@ public class TiledMap {
 	public int width;
 	
 	public ArrayList<Tile> tiles = new ArrayList<>();
-	ArrayList<TiledTileLayer> layers = new ArrayList<TiledTileLayer>();
+	public ArrayList<TiledTileLayer> layers = new ArrayList<TiledTileLayer>();
 
 
 	public ArrayList<Point> path = new ArrayList<>();
