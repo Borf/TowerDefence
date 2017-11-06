@@ -42,6 +42,7 @@ public class Game {
 	ArrayList<Enemy> enemies = new ArrayList<>();
 	ArrayList<Projectile> projectiles = new ArrayList<>();
 	ArrayList<Tower> towers = new ArrayList<>();
+	PowerUp[] powerUps;
 	Tower[] buildTowers;
 
 
@@ -51,12 +52,21 @@ public class Game {
 		this.level = level;
 		map = new TiledMap("/maps/" + level.map);
 		initializeTowerTemplates();
+		chargePowerUps();
+	}
+
+	private void chargePowerUps()
+	{
+		Class<?>[] powerUpTemplates = Reflection.getClasses("game.powerups");
+		powerUps = new PowerUp[powerUpTemplates.length-1];
+
 	}
 
 	/**
 	 * Initializes tower templates through reflection
 	 */
-	private void initializeTowerTemplates() {
+	private void initializeTowerTemplates()
+	{
 		Class<?>[] towerTemplates = Reflection.getClasses("game.towers");
 		buildTowers = new Tower[towerTemplates.length-1];
 		int ii = 0;
@@ -304,6 +314,11 @@ public class Game {
 		g2d.setFont(new Font("Segoe UI", 0, 72));
 		g2d.setColor(Color.black);
 		g2d.drawString("Lives: " + lives, 410,72);
+
+		for(PowerUp powerUp : powerUps)
+		{
+			powerUp.draw(g2d);
+		}
 
 
 
