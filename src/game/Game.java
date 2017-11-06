@@ -48,7 +48,7 @@ public class Game {
 
 	public Game(Level level)
 	{
-		level = level;
+		this.level = level;
 		map = new TiledMap("/maps/" + level.map);
 		initializeTowerTemplates();
 	}
