@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="javax.json.processing-1.0" level="project" />
     <orderEntry type="library" name="javax.json (2)" level="project" />
+    <orderEntry type="library" name="RXTXcomm" level="project" />
   </component>
 </module>

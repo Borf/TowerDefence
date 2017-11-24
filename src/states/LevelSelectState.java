@@ -5,6 +5,7 @@ import game.level.Level;
 import ui.Button;
 import util.Reflection;
 
+import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class LevelSelectState extends State {
 
 			int y = 50 + 150 * levelButtons.size();
 
-			levelButtons.add(new Button(c.getSimpleName(), 300, y, 400, 100));
+			levelButtons.add(new Button(c.getSimpleName(), towerDefence.getWidth()/2-200, y, 400, 100));
 
 
 		}
@@ -74,6 +75,7 @@ public class LevelSelectState extends State {
 
 	@Override
 	public void draw(Graphics2D g2d) {
+		g2d.drawImage(new ImageIcon(this.getClass().getResource("/div/test.png")).getImage(), 0,0, null);
 		backButton.draw(g2d);
 		for(Button b : levelButtons)
 			b.draw(g2d);
