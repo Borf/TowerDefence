@@ -1,5 +1,6 @@
 package ui;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
@@ -25,9 +26,7 @@ public class Button {
 	{
 		g2d.setColor(Color.black);
 		g2d.fill(new Rectangle2D.Double(x+10,y+10,width,height));
-		g2d.setColor(Color.gray);
-		g2d.fill(new Rectangle2D.Double(x,y,width,height));
-
+		g2d.drawImage(new ImageIcon(this.getClass().getResource("/div/wood.png")).getImage(),x,y,width,height,null);
 		g2d.setColor(Color.black);
 		g2d.setFont(new Font("Segoe UI", Font.PLAIN, 72));
 

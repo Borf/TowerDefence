@@ -6,12 +6,21 @@ import game.level.Level1;
 import game.projectiles.Projectile;
 import game.towers.Tower;
 import map.TiledMap;
+import sun.awt.image.ToolkitImage;
 import ui.MouseState;
 import util.Reflection;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.xml.soap.Text;
 import java.awt.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.nio.Buffer;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +40,7 @@ public class Game {
 	private int towerBuildScroll = 0;
 	private boolean towerBuildHack = false;
 	private MouseState startDragState;
-
+	private BufferedImage wood;
 	int gold = level.startingGold;
 	public int lives = level.lives;
 
@@ -52,6 +61,8 @@ public class Game {
 		this.level = level;
 		map = new TiledMap("/maps/" + level.map);
 		initializeTowerTemplates();
+		Image img =  new ImageIcon(this.getClass().getResource("/div/wood.png")).getImage();
+		wood = ((ToolkitImage) img).getBufferedImage();
 		chargePowerUps();
 	}
 
@@ -59,7 +70,6 @@ public class Game {
 	{
 		Class<?>[] powerUpTemplates = Reflection.getClasses("game.powerups");
 		powerUps = new PowerUp[powerUpTemplates.length-1];
-
 	}
 
 	/**
@@ -255,10 +265,11 @@ public class Game {
 	 */
 	public void draw(Graphics2D g2d)
 	{
+
+		TexturePaint Buildwood = new TexturePaint(wood, new Rectangle(400,150));
 		AffineTransform oldTransform = g2d.getTransform();
 		g2d.setTransform(getCameraTransform());
 		map.draw(g2d);
-
 
 		ArrayList<GameObject> objects = new ArrayList<>();
 		objects.addAll(enemies);
@@ -272,7 +283,10 @@ public class Game {
 		if(towerBuilding)
 		{
 			Shape buildWindow = new RoundRectangle2D.Double(towerBuildX, towerBuildY, 400, 150, 10, 10);
-			g2d.setColor(new Color(1.0f,1.0f,1.0f,0.5f));
+
+
+			g2d.setPaint(Buildwood);
+			//g2d.setColor(new Color(1.0f,1.0f,1.0f,0.5f));
 			g2d.fill(buildWindow);
 			g2d.setColor(Color.black);
 			g2d.draw(buildWindow);
@@ -303,13 +317,16 @@ public class Game {
 	 * @param g2d	the graphics object to draw on
 	 */
 	private void drawOverlay(Graphics2D g2d) {
-		g2d.setColor(new Color(1.0f,1.0f,1.0f,0.5f));
+
+
+		TexturePaint woodpaint = new TexturePaint(wood, new Rectangle(400,100));
+		g2d.setPaint(woodpaint);
 		g2d.fill(new RoundRectangle2D.Double(0,0,400,100, 50, 50));
 		g2d.setFont(new Font("Segoe UI", 0, 72));
 		g2d.setColor(Color.black);
 		g2d.drawString("Gold: " + gold, 10,72);
 
-		g2d.setColor(new Color(1.0f,1.0f,1.0f,0.5f));
+		g2d.setPaint(woodpaint);
 		g2d.fill(new RoundRectangle2D.Double(400,0,400,100, 50, 50));
 		g2d.setFont(new Font("Segoe UI", 0, 72));
 		g2d.setColor(Color.black);
@@ -413,4 +430,24 @@ public class Game {
 	public void addProjectile(Projectile projectile) {
 		projectiles.add(projectile);projectile.setGame(this);
 	}
+
+	public ArrayList<Enemy> GetEnemies(){
+		return enemies;
+	}
+	public ArrayList<Projectile> GetProjectile(){
+		return projectiles;
+	}
+	public ArrayList<Tower> GetTower(){	return towers; }
+
+	public void SetEnemies(ArrayList<Enemy> E){
+		enemies = E;
+	}
+	public void SetProjectile(ArrayList<Projectile> P){
+		projectiles = P;
+	}
+	public void SetTower(ArrayList<Tower> T){ towers = T; }
+	public void SetGold(int i){
+		gold= i;
+	}
+	public void AddGold(int i){ gold+= i; }
 }

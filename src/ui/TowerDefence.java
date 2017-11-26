@@ -1,6 +1,7 @@
 package ui;
 
 import game.Game;
+import io.Com.COM;
 import states.MainMenuState;
 import states.State;
 
@@ -16,15 +17,24 @@ public class TowerDefence extends JPanel implements ActionListener, MouseListene
 	MouseState mouseState = new MouseState();
 	MouseState lastMouseState = new MouseState();
 	public Game game;
-
+	public COM com;
 
 	public TowerDefence() {
 		super();
-		setSize(800, 600);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = /*800;*/ screenSize.getWidth();
+		double height = /*600;*/screenSize.getHeight();
+
+		setSize((int)width, (int)height);
 		currentState = new MainMenuState();
 		currentState.towerDefence = this;
 		currentState.init();
 
+		try {
+			com = new COM();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		new Timer(1000/60, this).start();
 		addMouseMotionListener(this);
