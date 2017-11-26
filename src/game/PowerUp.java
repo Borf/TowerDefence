@@ -1,18 +1,27 @@
 package game;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class PowerUp {
 
     private BufferedImage image;
     private int x,y;
 
-    public PowerUp(string imageString, int x, int y)
+    public PowerUp(String imageString, int x, int y)
     {
-        this.image = ImageIO.read(this.getClass().getResource(s));
+        try
+        {
+            this.image = ImageIO.read(this.getClass().getResource(imageString));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
         this.x = x;
         this.y = y;
     }
