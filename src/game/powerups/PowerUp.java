@@ -1,6 +1,5 @@
-package game;
+package game.powerups;
 
-import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;

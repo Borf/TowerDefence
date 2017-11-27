@@ -3,6 +3,7 @@ package game;
 import game.enemies.Enemy;
 import game.level.Level;
 import game.level.Level1;
+import game.powerups.PowerUp;
 import game.projectiles.Projectile;
 import game.towers.Tower;
 import map.TiledMap;
@@ -10,17 +11,11 @@ import sun.awt.image.ToolkitImage;
 import ui.MouseState;
 import util.Reflection;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.xml.soap.Text;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.net.URL;
-import java.nio.Buffer;
 import java.util.ArrayList;
 
 /**
@@ -70,6 +65,20 @@ public class Game {
 	{
 		Class<?>[] powerUpTemplates = Reflection.getClasses("game.powerups");
 		powerUps = new PowerUp[powerUpTemplates.length-1];
+		for(int i = 0; i < powerUpTemplates.length; i++)
+		{
+			try
+			{
+				if(!Modifier.isAbstract(powerUpTemplates[i].getModifiers())) {
+					PowerUp P = (PowerUp) powerUpTemplates[i].newInstance();
+					powerUps[i] = P;
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -279,6 +288,11 @@ public class Game {
 
 		for(GameObject o : objects)
 			o.draw(g2d);
+
+		for(PowerUp powerUp : powerUps)
+		{
+			powerUp.draw(g2d);
+		}
 
 		if(towerBuilding)
 		{
