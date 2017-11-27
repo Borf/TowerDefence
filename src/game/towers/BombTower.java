@@ -13,11 +13,13 @@ public class BombTower extends Tower {
 		this.cost = 10;
 		this.range = 300;
 		this.fireDelay = 0.5;
+		this.dmg = 1;
+		this.upgradeCost = this.cost;
 	}
 
 	@Override
 	public void shoot(Enemy e) {
 		//e.damage(10);
-		shoot(new BombProjectile(e.x, e.y));
+		shoot(new BombProjectile(e.x, e.y, this.dmg));
 	}
 }

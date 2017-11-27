@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class AreaProjectile extends Projectile {
 	double range;
+	int dmg;
 	public AreaProjectile(String image, double x, double y, int range) {
 		super(image);
 		this.range = range;

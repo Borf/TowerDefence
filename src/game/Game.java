@@ -7,7 +7,8 @@ import game.projectiles.Projectile;
 import game.towers.Tower;
 import map.TiledMap;
 import sun.awt.image.ToolkitImage;
-import ui.MouseState;
+import ui.*;
+import ui.Button;
 import util.Reflection;
 
 import javax.imageio.ImageIO;
@@ -35,15 +36,17 @@ public class Game {
 	private int currentWave = 1;
 	private double waveEnemySpawnTimer = 0;
 	private int waveEnemiesSpawned = 0;
-	private boolean towerBuilding = false;
+	private boolean towerBuilding, towerUpgrade = false;
 	private int towerBuildX, towerBuildY;
+	private int towerUpgradeX, towerUpgradeY;
 	private int towerBuildScroll = 0;
-	private boolean towerBuildHack = false;
+	private boolean towerBuildHack, towerUpgradeHack = false;
 	private MouseState startDragState;
 	private BufferedImage wood;
 	int gold = level.startingGold;
 	public int lives = level.lives;
-
+	ui.Button sell;
+	ui.Button upgrade;
 
 	public GameState gameState = GameState.WaveStart;
 	double stateTime = 0;
@@ -103,10 +106,17 @@ public class Game {
 			cameraX += lastMouseState.x - mouseState.x;
 			cameraY += lastMouseState.y - mouseState.y;
 		}
-
+		if(towerUpgrade) {
+			if (sell.clicked(mouseState, lastMouseState)) {
+				TowerSell();
+			}
+			if (upgrade.clicked(mouseState, lastMouseState)) {
+				TowerUpgrade();
+			}
+		}
 		//tower building menu
 		updateTowerBuildMenu(mouseState, lastMouseState);
-
+		updateTowerMenu(mouseState, lastMouseState);
 		switch(gameState)
 		{
 			case WaveStart:
@@ -226,6 +236,44 @@ public class Game {
 		}
 	}
 
+	private void updateTowerMenu(MouseState mouseState, MouseState lastMouseState) {
+		Point2D mouse = null;
+		try {
+			mouse = getCameraTransform().inverseTransform(new Point2D.Double(mouseState.x, mouseState.y), null);
+		} catch (NoninvertibleTransformException e) {
+			e.printStackTrace();
+		}
+
+		if (mouseState.left && !lastMouseState.left && !towerUpgrade) {
+			startDragState = new MouseState(mouseState);
+			int tileX = (int) (mouse.getX() / 128);
+			int tileY = (int) (mouse.getY() / 128);
+			if (tileX >= 0 && tileY >= 0 && tileX < map.width && tileY < map.height) {
+				int index = map.layers.get(0).indices[tileY][tileX];
+				if (index == 24) {
+					towerUpgradeX = tileX * 128 + 64;
+					towerUpgradeY = tileY * 128 + 64;
+					towerUpgrade = true;
+					towerUpgradeHack = true;
+				}
+			}
+		} else if (towerUpgrade && (mouseState.left || lastMouseState.left)) {
+			if (!lastMouseState.left && !towerUpgradeHack)
+			towerUpgrade = false;
+
+			if (!mouseState.left && lastMouseState.left)
+				towerUpgradeHack = false;
+
+
+		}
+	}
+
+
+
+
+
+
+
 	/**
 	 * Builds a tower at the towerbuild position
 	 * @param index the index in the tower build array of the tower to build
@@ -240,7 +288,7 @@ public class Game {
 			newTower.centerY = -(newTower.images[0].getHeight() - 128);
 			newTower.setGame(this);
 			towers.add(newTower);
-			map.layers.get(0).indices[(towerBuildY - 64) / 128][(towerBuildX - 64) / 128] = 1;
+			map.layers.get(0).indices[(towerBuildY - 64) / 128][(towerBuildX - 64) / 128] = 24;
 			map.layers.get(0).updateImage();
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -249,7 +297,36 @@ public class Game {
 		}
 	}
 
+	private void TowerSell(){
+		Tower T = findTower();
 
+
+			if(T != null) {
+				map.layers.get(0).indices[((int) T.y - 64) / 128][((int) T.x - 64) / 128] = 23;
+				map.layers.get(0).updateImage();
+				gold += (int)(T.cost * 0.7);
+				towers.remove(T);
+			}
+
+
+	}
+	private void TowerUpgrade(){
+		Tower T = findTower();
+		if(T != null) {
+			if(gold >= T.upgradeCost) {
+				T.levelUp();
+				gold -= T.upgradeCost;
+			}
+		}
+	}
+	private Tower findTower(){
+		for (Tower T: towers ) {
+			if(T.x == towerUpgradeX &&	T.y == towerUpgradeY){
+				return T;
+			}
+		}
+		return null;
+	}
 	/**
 	 * Draws the game
 	 * @param g2d The graphics object to draw on
@@ -273,7 +350,7 @@ public class Game {
 
 		if(towerBuilding)
 		{
-			Shape buildWindow = new RoundRectangle2D.Double(towerBuildX, towerBuildY, 400, 150, 10, 10);
+			Shape buildWindow = new RoundRectangle2D.Double(towerBuildX, towerBuildY, 400, 200, 10, 10);
 
 
 			g2d.setPaint(Buildwood);
@@ -285,11 +362,11 @@ public class Game {
 			int y = towerBuildY + 50;
 			for(Tower t : buildTowers)
 			{
-				Area s = new Area(new RoundRectangle2D.Double(x, y-40, 128, 130, 5,5));
+				Area s = new Area(new RoundRectangle2D.Double(x, y-40, 128, 160, 5,5));
 				s.intersect(new Area(buildWindow));
 				g2d.setClip(s);
 				t.x = x;
-				t.y = y;
+				t.y = y+30;
 				t.draw(g2d);
 				g2d.setFont(new Font("Segoe UI", Font.BOLD, 20));
 				g2d.drawString(t.cost + "", x, y-10);
@@ -297,6 +374,31 @@ public class Game {
 				g2d.draw(s);
 				x+=130;
 			}
+		}
+		if(towerUpgrade) {
+			int x = towerUpgradeX ;
+			int y = towerUpgradeY + 60;
+			sell = new Button("",x-50,y,30,30);
+			upgrade = new Button("",x+10,y,30,30);
+			sell.setRound();
+			upgrade.setRound();
+			upgrade.setImage("/div/upgrade.png");
+			sell.setImage("/div/sell.png");
+			upgrade.draw(g2d);
+			sell.draw(g2d);
+			int lvlX = x - 25;
+			int lvlY = y - 175;
+			g2d.drawImage(wood, lvlX, lvlY, 60 , 20, null);
+			try {
+				String text = "level: " + findTower().level;
+				g2d.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+				int textWidth = (int) g2d.getFont().getStringBounds(text, g2d.getFontRenderContext()).getWidth();
+
+				g2d.drawString(text, lvlX + 60 / 2 - textWidth / 2, lvlY + 15);
+
+			}catch (Exception E){}
+
 		}
 		g2d.setTransform(oldTransform);
 		drawOverlay(g2d);

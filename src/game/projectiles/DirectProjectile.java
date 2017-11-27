@@ -7,7 +7,7 @@ import game.enemies.Enemy;
  */
 public class DirectProjectile extends Projectile {
 	Enemy target;
-
+	int dmg;
 	public DirectProjectile(String image, Enemy target) {
 		super(image);
 		this.target = target;

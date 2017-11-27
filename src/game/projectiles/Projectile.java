@@ -15,7 +15,6 @@ public abstract  class Projectile extends GameObject {
 	double freezeTime = 0;
 	boolean atTarget = false;
 	Game game;
-
 	public Projectile(String image) {
 		super(image, 1, 1);
 	}
