@@ -9,15 +9,16 @@ import game.projectiles.ArrowProjectile;
 public class ArrowTower extends Tower {
 	public ArrowTower() {
 		super("/towers/arrow.png");
-		//this.cost = 100;
+		this.cost = 1;
 		this.range = 200;
 		this.fireDelay = 0.25;
+		this.upgradeCost = this.cost;
 	}
 
 	@Override
 	public void shoot(Enemy e) {
-		//e.damage(10);
-		shoot(new ArrowProjectile(e));
-		//shoot(new BombProjectile(e.x, e.y));
+
+		shoot(new ArrowProjectile(e, this.dmg));
+
 	}
 }
