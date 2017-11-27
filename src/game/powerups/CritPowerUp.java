@@ -2,9 +2,9 @@ package game.powerups;
 
 public class CritPowerUp extends PowerUp {
 
-    public CritPowerUp(int x, int y)
+    public CritPowerUp()
     {
-        super("projectiles/image.jpg", x, y);
+        super("/powerups/oneUp.png", 10, 10);
     }
 
 }

@@ -2,16 +2,15 @@ package game.powerups;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class PowerUp {
+public abstract class PowerUp {
 
     private BufferedImage image;
-    private int x,y;
+    private int x,y,width,height;
 
-    public PowerUp(String imageString, int x, int y)
+    public PowerUp(String imageString, int x, int y, int width, int height)
     {
         try
         {
@@ -23,15 +22,15 @@ public class PowerUp {
         }
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
+
     }
 
     public void draw(Graphics2D G2D)
     {
-        AffineTransform tx = new AffineTransform();
-        tx.translate(x,y);
         //tx.rotate(angle);
-        tx.translate(image.getWidth()/2, image.getHeight()/2);
         //tx.translate(centerX, centerY);
-        G2D.drawImage(image, tx, null);
+        G2D.drawImage(image, x, y, width, height, null);
     }
 }
