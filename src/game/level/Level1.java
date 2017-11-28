@@ -11,7 +11,9 @@ public class Level1 extends Level {
 
 
 
-		waves.add(new Wave(1, 10, game.enemies.Wanderer.class));
+		waves.add(new Wave(1, 10, game.enemies.Boy.class));
+		waves.add(new Wave(1, 10, game.enemies.Zombie.class));
+		waves.add(new Wave(1, 10, game.enemies.Beetle.class));
 		waves.add(new Wave(0.25f, 10, game.enemies.Wanderer.class));
 
 
