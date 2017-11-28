@@ -54,6 +54,7 @@ public class LevelSelectState extends State {
 				try {
 					Level level = (Level) Class.forName("game.level." + b.getText()).newInstance();
 					towerDefence.game = new Game(level);
+					towerDefence.com.setGame(towerDefence.game);
 					return new GameState();
 
 

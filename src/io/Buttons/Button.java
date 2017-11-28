@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by sander on 14-11-2017.
  */
-public abstract class Button {
+public  class Button {
     public int PinNumber;
     COM com;
     Game game;
