@@ -65,4 +65,9 @@ public abstract class Tower extends GameObject {
 	{
 		this.dmg = dmg;
 	}
+
+	public int getDamage()
+	{
+		return dmg;
+	}
 }

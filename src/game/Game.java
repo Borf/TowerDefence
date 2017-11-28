@@ -68,6 +68,7 @@ public class Game {
 	{
 		Class<?>[] powerUpTemplates = Reflection.getClasses("game.powerups");
 		powerUps = new PowerUp[powerUpTemplates.length-1];
+		int ii = 0;
 		for(int i = 0; i < powerUpTemplates.length; i++)
 		{
 			try
@@ -75,7 +76,7 @@ public class Game {
 				if(!Modifier.isAbstract(powerUpTemplates[i].getModifiers())) {
 					PowerUp P = (PowerUp) powerUpTemplates[i].newInstance();
 					P.setGame(this);
-					powerUps[i] = P;
+					powerUps[ii++] = P;
 				}
 			}
 			catch(Exception e)

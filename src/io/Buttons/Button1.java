@@ -12,7 +12,6 @@ public class Button1 extends Button {
     @Override
     public void effect() {
         setGame(); //de game moet geset worden zodat deze functie toegang heeft tot de huidige arrays van alles.
-
         enemies = game.GetEnemies();
         for (Enemy e: enemies) {
             e.damage(100000);

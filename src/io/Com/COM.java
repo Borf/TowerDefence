@@ -119,7 +119,6 @@ public class COM implements SerialPortEventListener {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
             try {
                 String inputLine=input.readLine();
-                System.out.println(inputLine);
                 switch (inputLine) {
                     case "5":
                         button1.effect();
