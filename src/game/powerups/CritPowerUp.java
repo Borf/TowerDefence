@@ -9,6 +9,7 @@ public class CritPowerUp extends PowerUp {
     {
         super("/projectiles/electric-energy.png", 10, 250, 100, 100);
         this.rechargeTime = 10;
+        this.activeTime = 5;
         this.button.setRound();
     }
 
@@ -18,7 +19,19 @@ public class CritPowerUp extends PowerUp {
         ArrayList<Tower> towers = this.game.getTowers();
         for(Tower tower : towers)
         {
-            tower.setDamage(100);
+            int damage = tower.getDamage();
+            tower.setDamage(damage * 5);
+        }
+    }
+
+    @Override
+    public void deActivate()
+    {
+        ArrayList<Tower> towers = this.game.getTowers();
+        for(Tower tower : towers)
+        {
+            int damage = tower.getDamage();
+            tower.setDamage(damage / 5);
         }
     }
 

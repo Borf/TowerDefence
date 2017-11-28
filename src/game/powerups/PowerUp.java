@@ -9,8 +9,11 @@ public abstract class PowerUp {
 
     protected Button button;
     private Boolean useable = true;
+    private Boolean isActive = false;
     private double currentCharge;
+    private double activeTimer;
     protected int rechargeTime;
+    protected int activeTime;
     protected Game game;
 
     public PowerUp(String imageString, int x, int y, int width, int height)
@@ -31,11 +34,15 @@ public abstract class PowerUp {
 
     public void update(MouseState mouseState, MouseState lastMouseState, double elapsedTime)
     {
+
         if(button.clicked(mouseState, lastMouseState) && useable)
         {
             effect();
+
+            isActive = true;
             useable = false;
             currentCharge = rechargeTime;
+            activeTimer = activeTime;
         }
         else
         {
@@ -43,6 +50,15 @@ public abstract class PowerUp {
             if(currentCharge <= 0)
             {
                 useable = true;
+            }
+        }
+        if(isActive)
+        {
+            activeTimer -= elapsedTime;
+            if(activeTimer <= 0)
+            {
+                isActive = false;
+                deActivate();
             }
         }
     }
@@ -53,6 +69,11 @@ public abstract class PowerUp {
     }
 
     public void effect()
+    {
+
+    }
+
+    public void deActivate()
     {
 
     }
