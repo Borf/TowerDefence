@@ -22,6 +22,7 @@ public class GameObject
 	public double centerX = 0, centerY = 0;
 
 
+	protected int getFrameCount() { return sheetWidth; }
 
 	private static HashMap<String, BufferedImage[]> imageCache = new HashMap<>();
 

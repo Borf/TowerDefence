@@ -27,6 +27,10 @@ public class Enemy extends GameObject {
 	{
 		super(image, 4, 4);
 	}
+	public Enemy(String image, int frames)
+	{
+		super(image, frames, 4);
+	}
 
 
 	/**
@@ -64,7 +68,7 @@ public class Enemy extends GameObject {
 					direction = 0;
 				}
 
-			frame = direction * 4 + (int)((System.currentTimeMillis() / 100)%4);
+			frame = direction * getFrameCount() + (int)((System.currentTimeMillis() / 100)%getFrameCount());
 		}
 
 
